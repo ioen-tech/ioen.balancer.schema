@@ -1,0 +1,26 @@
+{
+  "name": "Redgrid.energy.schema",
+  "version": "0.0.1",
+  "description": "The schemas and Typescript types and database access for Nanogrid",
+  "main": "./prisma/generated",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "prisma generate",
+    "db-setup": "prisma db push --preview-feature",
+    "postinstall": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/redgridone/Redgrid.energy.schema.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/redgridone/Redgrid.energy.schema/issues"
+  },
+  "homepage": "https://github.com/redgridone/Redgrid.energy.schema#readme",
+  "dependencies": {
+    "@prisma/client": "^2.20.1",
+    "prisma": "^2.20.1"
+  }
+}

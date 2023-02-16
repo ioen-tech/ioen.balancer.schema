@@ -1,0 +1,55 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  user_id             Int     @id @default(autoincrement())
+  username            String
+  password            String
+  email_address       String
+  rewards_points      Int?
+  energy_consumption  Int?
+  retailer            String
+  meter_hardware      String
+  is_group_admin      Int?
+  group_id            Int?
+
+  @@map("user")
+}
+
+model Group {
+  group_id      Int       @id @default(autoincrement())
+  group_name    String
+  group_logo    String?
+
+  @@map("group")
+}
+
+model GroupMembers {
+  group_member_id       Int     @id @default(autoincrement())
+  user_id               Int
+  group_id              Int
+
+  @@map("group_members")
+  @@index([user_id], name: "fk_user1_idx")
+  @@index([group_id], name: "fk_group1_idx")
+}
+
+model Fronius {
+  fronius_id              Int       @id @default(autoincrement())
+  fronius_userid          String
+  fronius_password        String
+  fronius_accesskey_id    String
+  fronius_accesskey_value String
+  user_id                 Int
+
+  @@index([user_id], name: "fk_user1_idx")
+  @@map("fronius")
+}
+
