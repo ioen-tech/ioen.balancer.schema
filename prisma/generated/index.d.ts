@@ -50,16 +50,15 @@ export type GroupMembers = {
 }
 
 /**
- * Model Fronius
+ * Model FroniusInfo
  */
 
-export type Fronius = {
-  fronius_id: number
+export type FroniusInfo = {
+  user_id: number
   fronius_userid: string
   fronius_password: string
   fronius_accesskey_id: string
   fronius_accesskey_value: string
-  user_id: number
 }
 
 
@@ -216,14 +215,14 @@ export class PrismaClient<
   get groupMembers(): Prisma.GroupMembersDelegate<GlobalReject>;
 
   /**
-   * `prisma.fronius`: Exposes CRUD operations for the **Fronius** model.
+   * `prisma.froniusInfo`: Exposes CRUD operations for the **FroniusInfo** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more Froniuses
-    * const froniuses = await prisma.fronius.findMany()
+    * // Fetch zero or more FroniusInfos
+    * const froniusInfos = await prisma.froniusInfo.findMany()
     * ```
     */
-  get fronius(): Prisma.FroniusDelegate<GlobalReject>;
+  get froniusInfo(): Prisma.FroniusInfoDelegate<GlobalReject>;
 }
 
 export namespace Prisma {
@@ -597,7 +596,7 @@ export namespace Prisma {
     User: 'User',
     Group: 'Group',
     GroupMembers: 'GroupMembers',
-    Fronius: 'Fronius'
+    FroniusInfo: 'FroniusInfo'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1043,6 +1042,11 @@ export namespace Prisma {
     meter_hardware?: boolean
     is_group_admin?: boolean
     group_id?: boolean
+    fronius_info?: boolean | FroniusInfoArgs
+  }
+
+  export type UserInclude = {
+    fronius_info?: boolean | FroniusInfoArgs
   }
 
   export type UserGetPayload<
@@ -1054,12 +1058,17 @@ export namespace Prisma {
     ? never
     : S extends UserArgs | UserFindManyArgs
     ?'include' extends U
-    ? User 
+    ? User  & {
+    [P in TrueKeys<S['include']>]: 
+          P extends 'fronius_info'
+        ? FroniusInfoGetPayload<S['include'][P]> | null : never
+  } 
     : 'select' extends U
     ? {
     [P in TrueKeys<S['select']>]: P extends keyof User ?User [P]
   : 
-     never
+          P extends 'fronius_info'
+        ? FroniusInfoGetPayload<S['select'][P]> | null : never
   } 
     : User
   : User
@@ -1399,6 +1408,7 @@ export namespace Prisma {
     constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
     readonly [Symbol.toStringTag]: 'PrismaClientPromise';
 
+    fronius_info<T extends FroniusInfoArgs = {}>(args?: Subset<T, FroniusInfoArgs>): CheckSelect<T, Prisma__FroniusInfoClient<FroniusInfo | null >, Prisma__FroniusInfoClient<FroniusInfoGetPayload<T> | null >>;
 
     private get _document();
     /**
@@ -1435,6 +1445,11 @@ export namespace Prisma {
     **/
     select?: UserSelect | null
     /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: UserInclude | null
+    /**
      * Throw an Error if a User can't be found
      * 
     **/
@@ -1456,6 +1471,11 @@ export namespace Prisma {
      * 
     **/
     select?: UserSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: UserInclude | null
     /**
      * Throw an Error if a User can't be found
      * 
@@ -1514,6 +1534,11 @@ export namespace Prisma {
     **/
     select?: UserSelect | null
     /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: UserInclude | null
+    /**
      * Filter, which Users to fetch.
      * 
     **/
@@ -1560,6 +1585,11 @@ export namespace Prisma {
     **/
     select?: UserSelect | null
     /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: UserInclude | null
+    /**
      * The data needed to create a User.
      * 
     **/
@@ -1585,6 +1615,11 @@ export namespace Prisma {
      * 
     **/
     select?: UserSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: UserInclude | null
     /**
      * The data needed to update a User.
      * 
@@ -1617,6 +1652,11 @@ export namespace Prisma {
     **/
     select?: UserSelect | null
     /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: UserInclude | null
+    /**
      * The filter to search for the User to update in case it exists.
      * 
     **/
@@ -1644,6 +1684,11 @@ export namespace Prisma {
     **/
     select?: UserSelect | null
     /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: UserInclude | null
+    /**
      * Filter which User to delete.
      * 
     **/
@@ -1668,6 +1713,11 @@ export namespace Prisma {
      * 
     **/
     select?: UserSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: UserInclude | null
   }
 
 
@@ -3367,382 +3417,380 @@ export namespace Prisma {
 
 
   /**
-   * Model Fronius
+   * Model FroniusInfo
    */
 
 
-  export type AggregateFronius = {
-    _count: FroniusCountAggregateOutputType | null
-    count: FroniusCountAggregateOutputType | null
-    _avg: FroniusAvgAggregateOutputType | null
-    avg: FroniusAvgAggregateOutputType | null
-    _sum: FroniusSumAggregateOutputType | null
-    sum: FroniusSumAggregateOutputType | null
-    _min: FroniusMinAggregateOutputType | null
-    min: FroniusMinAggregateOutputType | null
-    _max: FroniusMaxAggregateOutputType | null
-    max: FroniusMaxAggregateOutputType | null
+  export type AggregateFroniusInfo = {
+    _count: FroniusInfoCountAggregateOutputType | null
+    count: FroniusInfoCountAggregateOutputType | null
+    _avg: FroniusInfoAvgAggregateOutputType | null
+    avg: FroniusInfoAvgAggregateOutputType | null
+    _sum: FroniusInfoSumAggregateOutputType | null
+    sum: FroniusInfoSumAggregateOutputType | null
+    _min: FroniusInfoMinAggregateOutputType | null
+    min: FroniusInfoMinAggregateOutputType | null
+    _max: FroniusInfoMaxAggregateOutputType | null
+    max: FroniusInfoMaxAggregateOutputType | null
   }
 
-  export type FroniusAvgAggregateOutputType = {
-    fronius_id: number | null
+  export type FroniusInfoAvgAggregateOutputType = {
     user_id: number | null
   }
 
-  export type FroniusSumAggregateOutputType = {
-    fronius_id: number | null
+  export type FroniusInfoSumAggregateOutputType = {
     user_id: number | null
   }
 
-  export type FroniusMinAggregateOutputType = {
-    fronius_id: number | null
+  export type FroniusInfoMinAggregateOutputType = {
+    user_id: number | null
     fronius_userid: string | null
     fronius_password: string | null
     fronius_accesskey_id: string | null
     fronius_accesskey_value: string | null
-    user_id: number | null
   }
 
-  export type FroniusMaxAggregateOutputType = {
-    fronius_id: number | null
+  export type FroniusInfoMaxAggregateOutputType = {
+    user_id: number | null
     fronius_userid: string | null
     fronius_password: string | null
     fronius_accesskey_id: string | null
     fronius_accesskey_value: string | null
-    user_id: number | null
   }
 
-  export type FroniusCountAggregateOutputType = {
-    fronius_id: number
+  export type FroniusInfoCountAggregateOutputType = {
+    user_id: number
     fronius_userid: number
     fronius_password: number
     fronius_accesskey_id: number
     fronius_accesskey_value: number
-    user_id: number
     _all: number
   }
 
 
-  export type FroniusAvgAggregateInputType = {
-    fronius_id?: true
+  export type FroniusInfoAvgAggregateInputType = {
     user_id?: true
   }
 
-  export type FroniusSumAggregateInputType = {
-    fronius_id?: true
+  export type FroniusInfoSumAggregateInputType = {
     user_id?: true
   }
 
-  export type FroniusMinAggregateInputType = {
-    fronius_id?: true
+  export type FroniusInfoMinAggregateInputType = {
+    user_id?: true
     fronius_userid?: true
     fronius_password?: true
     fronius_accesskey_id?: true
     fronius_accesskey_value?: true
-    user_id?: true
   }
 
-  export type FroniusMaxAggregateInputType = {
-    fronius_id?: true
+  export type FroniusInfoMaxAggregateInputType = {
+    user_id?: true
     fronius_userid?: true
     fronius_password?: true
     fronius_accesskey_id?: true
     fronius_accesskey_value?: true
-    user_id?: true
   }
 
-  export type FroniusCountAggregateInputType = {
-    fronius_id?: true
+  export type FroniusInfoCountAggregateInputType = {
+    user_id?: true
     fronius_userid?: true
     fronius_password?: true
     fronius_accesskey_id?: true
     fronius_accesskey_value?: true
-    user_id?: true
     _all?: true
   }
 
-  export type FroniusAggregateArgs = {
+  export type FroniusInfoAggregateArgs = {
     /**
-     * Filter which Fronius to aggregate.
+     * Filter which FroniusInfo to aggregate.
      * 
     **/
-    where?: FroniusWhereInput
+    where?: FroniusInfoWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Froniuses to fetch.
+     * Determine the order of FroniusInfos to fetch.
      * 
     **/
-    orderBy?: Enumerable<FroniusOrderByInput>
+    orderBy?: Enumerable<FroniusInfoOrderByInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
      * 
     **/
-    cursor?: FroniusWhereUniqueInput
+    cursor?: FroniusInfoWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Froniuses from the position of the cursor.
+     * Take `±n` FroniusInfos from the position of the cursor.
      * 
     **/
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Froniuses.
+     * Skip the first `n` FroniusInfos.
      * 
     **/
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Count returned Froniuses
+     * Count returned FroniusInfos
     **/
-    _count?: true | FroniusCountAggregateInputType
+    _count?: true | FroniusInfoCountAggregateInputType
     /**
      * @deprecated since 2.23.0 please use `_count`
     **/
-    count?: true | FroniusCountAggregateInputType
+    count?: true | FroniusInfoCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to average
     **/
-    _avg?: FroniusAvgAggregateInputType
+    _avg?: FroniusInfoAvgAggregateInputType
     /**
      * @deprecated since 2.23.0 please use `_avg`
     **/
-    avg?: FroniusAvgAggregateInputType
+    avg?: FroniusInfoAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to sum
     **/
-    _sum?: FroniusSumAggregateInputType
+    _sum?: FroniusInfoSumAggregateInputType
     /**
      * @deprecated since 2.23.0 please use `_sum`
     **/
-    sum?: FroniusSumAggregateInputType
+    sum?: FroniusInfoSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the minimum value
     **/
-    _min?: FroniusMinAggregateInputType
+    _min?: FroniusInfoMinAggregateInputType
     /**
      * @deprecated since 2.23.0 please use `_min`
     **/
-    min?: FroniusMinAggregateInputType
+    min?: FroniusInfoMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the maximum value
     **/
-    _max?: FroniusMaxAggregateInputType
+    _max?: FroniusInfoMaxAggregateInputType
     /**
      * @deprecated since 2.23.0 please use `_max`
     **/
-    max?: FroniusMaxAggregateInputType
+    max?: FroniusInfoMaxAggregateInputType
   }
 
-  export type GetFroniusAggregateType<T extends FroniusAggregateArgs> = {
-        [P in keyof T & keyof AggregateFronius]: P extends '_count' | 'count'
+  export type GetFroniusInfoAggregateType<T extends FroniusInfoAggregateArgs> = {
+        [P in keyof T & keyof AggregateFroniusInfo]: P extends '_count' | 'count'
       ? T[P] extends true
         ? number
-        : GetScalarType<T[P], AggregateFronius[P]>
-      : GetScalarType<T[P], AggregateFronius[P]>
+        : GetScalarType<T[P], AggregateFroniusInfo[P]>
+      : GetScalarType<T[P], AggregateFroniusInfo[P]>
   }
 
 
     
     
-  export type FroniusGroupByArgs = {
-    where?: FroniusWhereInput
-    orderBy?: Enumerable<FroniusOrderByInput>
-    by: Array<FroniusScalarFieldEnum>
-    having?: FroniusScalarWhereWithAggregatesInput
+  export type FroniusInfoGroupByArgs = {
+    where?: FroniusInfoWhereInput
+    orderBy?: Enumerable<FroniusInfoOrderByInput>
+    by: Array<FroniusInfoScalarFieldEnum>
+    having?: FroniusInfoScalarWhereWithAggregatesInput
     take?: number
     skip?: number
-    _count?: FroniusCountAggregateInputType | true
-    _avg?: FroniusAvgAggregateInputType
-    _sum?: FroniusSumAggregateInputType
-    _min?: FroniusMinAggregateInputType
-    _max?: FroniusMaxAggregateInputType
+    _count?: FroniusInfoCountAggregateInputType | true
+    _avg?: FroniusInfoAvgAggregateInputType
+    _sum?: FroniusInfoSumAggregateInputType
+    _min?: FroniusInfoMinAggregateInputType
+    _max?: FroniusInfoMaxAggregateInputType
   }
 
 
-  export type FroniusGroupByOutputType = {
-    fronius_id: number
+  export type FroniusInfoGroupByOutputType = {
+    user_id: number
     fronius_userid: string
     fronius_password: string
     fronius_accesskey_id: string
     fronius_accesskey_value: string
-    user_id: number
-    _count: FroniusCountAggregateOutputType | null
-    _avg: FroniusAvgAggregateOutputType | null
-    _sum: FroniusSumAggregateOutputType | null
-    _min: FroniusMinAggregateOutputType | null
-    _max: FroniusMaxAggregateOutputType | null
+    _count: FroniusInfoCountAggregateOutputType | null
+    _avg: FroniusInfoAvgAggregateOutputType | null
+    _sum: FroniusInfoSumAggregateOutputType | null
+    _min: FroniusInfoMinAggregateOutputType | null
+    _max: FroniusInfoMaxAggregateOutputType | null
   }
 
-  type GetFroniusGroupByPayload<T extends FroniusGroupByArgs> = Promise<
+  type GetFroniusInfoGroupByPayload<T extends FroniusInfoGroupByArgs> = Promise<
     Array<
-      PickArray<FroniusGroupByOutputType, T['by']> & 
+      PickArray<FroniusInfoGroupByOutputType, T['by']> & 
         {
-          [P in ((keyof T) & (keyof FroniusGroupByOutputType))]: P extends '_count' 
+          [P in ((keyof T) & (keyof FroniusInfoGroupByOutputType))]: P extends '_count' 
             ? T[P] extends boolean 
               ? number 
-              : GetScalarType<T[P], FroniusGroupByOutputType[P]> 
-            : GetScalarType<T[P], FroniusGroupByOutputType[P]>
+              : GetScalarType<T[P], FroniusInfoGroupByOutputType[P]> 
+            : GetScalarType<T[P], FroniusInfoGroupByOutputType[P]>
         }
       > 
     >
 
 
-  export type FroniusSelect = {
-    fronius_id?: boolean
+  export type FroniusInfoSelect = {
+    user_id?: boolean
     fronius_userid?: boolean
     fronius_password?: boolean
     fronius_accesskey_id?: boolean
     fronius_accesskey_value?: boolean
-    user_id?: boolean
+    user?: boolean | UserArgs
   }
 
-  export type FroniusGetPayload<
-    S extends boolean | null | undefined | FroniusArgs,
+  export type FroniusInfoInclude = {
+    user?: boolean | UserArgs
+  }
+
+  export type FroniusInfoGetPayload<
+    S extends boolean | null | undefined | FroniusInfoArgs,
     U = keyof S
       > = S extends true
-        ? Fronius
+        ? FroniusInfo
     : S extends undefined
     ? never
-    : S extends FroniusArgs | FroniusFindManyArgs
+    : S extends FroniusInfoArgs | FroniusInfoFindManyArgs
     ?'include' extends U
-    ? Fronius 
+    ? FroniusInfo  & {
+    [P in TrueKeys<S['include']>]: 
+          P extends 'user'
+        ? UserGetPayload<S['include'][P]> : never
+  } 
     : 'select' extends U
     ? {
-    [P in TrueKeys<S['select']>]: P extends keyof Fronius ?Fronius [P]
+    [P in TrueKeys<S['select']>]: P extends keyof FroniusInfo ?FroniusInfo [P]
   : 
-     never
+          P extends 'user'
+        ? UserGetPayload<S['select'][P]> : never
   } 
-    : Fronius
-  : Fronius
+    : FroniusInfo
+  : FroniusInfo
 
 
-  type FroniusCountArgs = Merge<
-    Omit<FroniusFindManyArgs, 'select' | 'include'> & {
-      select?: FroniusCountAggregateInputType | true
+  type FroniusInfoCountArgs = Merge<
+    Omit<FroniusInfoFindManyArgs, 'select' | 'include'> & {
+      select?: FroniusInfoCountAggregateInputType | true
     }
   >
 
-  export interface FroniusDelegate<GlobalRejectSettings> {
+  export interface FroniusInfoDelegate<GlobalRejectSettings> {
     /**
-     * Find zero or one Fronius that matches the filter.
-     * @param {FroniusFindUniqueArgs} args - Arguments to find a Fronius
+     * Find zero or one FroniusInfo that matches the filter.
+     * @param {FroniusInfoFindUniqueArgs} args - Arguments to find a FroniusInfo
      * @example
-     * // Get one Fronius
-     * const fronius = await prisma.fronius.findUnique({
+     * // Get one FroniusInfo
+     * const froniusInfo = await prisma.froniusInfo.findUnique({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
     **/
-    findUnique<T extends FroniusFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
-      args: SelectSubset<T, FroniusFindUniqueArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'Fronius'> extends True ? CheckSelect<T, Prisma__FroniusClient<Fronius>, Prisma__FroniusClient<FroniusGetPayload<T>>> : CheckSelect<T, Prisma__FroniusClient<Fronius | null >, Prisma__FroniusClient<FroniusGetPayload<T> | null >>
+    findUnique<T extends FroniusInfoFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args: SelectSubset<T, FroniusInfoFindUniqueArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'FroniusInfo'> extends True ? CheckSelect<T, Prisma__FroniusInfoClient<FroniusInfo>, Prisma__FroniusInfoClient<FroniusInfoGetPayload<T>>> : CheckSelect<T, Prisma__FroniusInfoClient<FroniusInfo | null >, Prisma__FroniusInfoClient<FroniusInfoGetPayload<T> | null >>
 
     /**
-     * Find the first Fronius that matches the filter.
+     * Find the first FroniusInfo that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {FroniusFindFirstArgs} args - Arguments to find a Fronius
+     * @param {FroniusInfoFindFirstArgs} args - Arguments to find a FroniusInfo
      * @example
-     * // Get one Fronius
-     * const fronius = await prisma.fronius.findFirst({
+     * // Get one FroniusInfo
+     * const froniusInfo = await prisma.froniusInfo.findFirst({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
     **/
-    findFirst<T extends FroniusFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
-      args?: SelectSubset<T, FroniusFindFirstArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'Fronius'> extends True ? CheckSelect<T, Prisma__FroniusClient<Fronius>, Prisma__FroniusClient<FroniusGetPayload<T>>> : CheckSelect<T, Prisma__FroniusClient<Fronius | null >, Prisma__FroniusClient<FroniusGetPayload<T> | null >>
+    findFirst<T extends FroniusInfoFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args?: SelectSubset<T, FroniusInfoFindFirstArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'FroniusInfo'> extends True ? CheckSelect<T, Prisma__FroniusInfoClient<FroniusInfo>, Prisma__FroniusInfoClient<FroniusInfoGetPayload<T>>> : CheckSelect<T, Prisma__FroniusInfoClient<FroniusInfo | null >, Prisma__FroniusInfoClient<FroniusInfoGetPayload<T> | null >>
 
     /**
-     * Find zero or more Froniuses that matches the filter.
+     * Find zero or more FroniusInfos that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {FroniusFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @param {FroniusInfoFindManyArgs=} args - Arguments to filter and select certain fields only.
      * @example
-     * // Get all Froniuses
-     * const froniuses = await prisma.fronius.findMany()
+     * // Get all FroniusInfos
+     * const froniusInfos = await prisma.froniusInfo.findMany()
      * 
-     * // Get first 10 Froniuses
-     * const froniuses = await prisma.fronius.findMany({ take: 10 })
+     * // Get first 10 FroniusInfos
+     * const froniusInfos = await prisma.froniusInfo.findMany({ take: 10 })
      * 
-     * // Only select the `fronius_id`
-     * const froniusWithFronius_idOnly = await prisma.fronius.findMany({ select: { fronius_id: true } })
+     * // Only select the `user_id`
+     * const froniusInfoWithUser_idOnly = await prisma.froniusInfo.findMany({ select: { user_id: true } })
      * 
     **/
-    findMany<T extends FroniusFindManyArgs>(
-      args?: SelectSubset<T, FroniusFindManyArgs>
-    ): CheckSelect<T, PrismaPromise<Array<Fronius>>, PrismaPromise<Array<FroniusGetPayload<T>>>>
+    findMany<T extends FroniusInfoFindManyArgs>(
+      args?: SelectSubset<T, FroniusInfoFindManyArgs>
+    ): CheckSelect<T, PrismaPromise<Array<FroniusInfo>>, PrismaPromise<Array<FroniusInfoGetPayload<T>>>>
 
     /**
-     * Create a Fronius.
-     * @param {FroniusCreateArgs} args - Arguments to create a Fronius.
+     * Create a FroniusInfo.
+     * @param {FroniusInfoCreateArgs} args - Arguments to create a FroniusInfo.
      * @example
-     * // Create one Fronius
-     * const Fronius = await prisma.fronius.create({
+     * // Create one FroniusInfo
+     * const FroniusInfo = await prisma.froniusInfo.create({
      *   data: {
-     *     // ... data to create a Fronius
+     *     // ... data to create a FroniusInfo
      *   }
      * })
      * 
     **/
-    create<T extends FroniusCreateArgs>(
-      args: SelectSubset<T, FroniusCreateArgs>
-    ): CheckSelect<T, Prisma__FroniusClient<Fronius>, Prisma__FroniusClient<FroniusGetPayload<T>>>
+    create<T extends FroniusInfoCreateArgs>(
+      args: SelectSubset<T, FroniusInfoCreateArgs>
+    ): CheckSelect<T, Prisma__FroniusInfoClient<FroniusInfo>, Prisma__FroniusInfoClient<FroniusInfoGetPayload<T>>>
 
     /**
-     * Create many Froniuses.
-     *     @param {FroniusCreateManyArgs} args - Arguments to create many Froniuses.
+     * Create many FroniusInfos.
+     *     @param {FroniusInfoCreateManyArgs} args - Arguments to create many FroniusInfos.
      *     @example
-     *     // Create many Froniuses
-     *     const fronius = await prisma.fronius.createMany({
+     *     // Create many FroniusInfos
+     *     const froniusInfo = await prisma.froniusInfo.createMany({
      *       data: {
      *         // ... provide data here
      *       }
      *     })
      *     
     **/
-    createMany<T extends FroniusCreateManyArgs>(
-      args?: SelectSubset<T, FroniusCreateManyArgs>
+    createMany<T extends FroniusInfoCreateManyArgs>(
+      args?: SelectSubset<T, FroniusInfoCreateManyArgs>
     ): PrismaPromise<BatchPayload>
 
     /**
-     * Delete a Fronius.
-     * @param {FroniusDeleteArgs} args - Arguments to delete one Fronius.
+     * Delete a FroniusInfo.
+     * @param {FroniusInfoDeleteArgs} args - Arguments to delete one FroniusInfo.
      * @example
-     * // Delete one Fronius
-     * const Fronius = await prisma.fronius.delete({
+     * // Delete one FroniusInfo
+     * const FroniusInfo = await prisma.froniusInfo.delete({
      *   where: {
-     *     // ... filter to delete one Fronius
+     *     // ... filter to delete one FroniusInfo
      *   }
      * })
      * 
     **/
-    delete<T extends FroniusDeleteArgs>(
-      args: SelectSubset<T, FroniusDeleteArgs>
-    ): CheckSelect<T, Prisma__FroniusClient<Fronius>, Prisma__FroniusClient<FroniusGetPayload<T>>>
+    delete<T extends FroniusInfoDeleteArgs>(
+      args: SelectSubset<T, FroniusInfoDeleteArgs>
+    ): CheckSelect<T, Prisma__FroniusInfoClient<FroniusInfo>, Prisma__FroniusInfoClient<FroniusInfoGetPayload<T>>>
 
     /**
-     * Update one Fronius.
-     * @param {FroniusUpdateArgs} args - Arguments to update one Fronius.
+     * Update one FroniusInfo.
+     * @param {FroniusInfoUpdateArgs} args - Arguments to update one FroniusInfo.
      * @example
-     * // Update one Fronius
-     * const fronius = await prisma.fronius.update({
+     * // Update one FroniusInfo
+     * const froniusInfo = await prisma.froniusInfo.update({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -3752,34 +3800,34 @@ export namespace Prisma {
      * })
      * 
     **/
-    update<T extends FroniusUpdateArgs>(
-      args: SelectSubset<T, FroniusUpdateArgs>
-    ): CheckSelect<T, Prisma__FroniusClient<Fronius>, Prisma__FroniusClient<FroniusGetPayload<T>>>
+    update<T extends FroniusInfoUpdateArgs>(
+      args: SelectSubset<T, FroniusInfoUpdateArgs>
+    ): CheckSelect<T, Prisma__FroniusInfoClient<FroniusInfo>, Prisma__FroniusInfoClient<FroniusInfoGetPayload<T>>>
 
     /**
-     * Delete zero or more Froniuses.
-     * @param {FroniusDeleteManyArgs} args - Arguments to filter Froniuses to delete.
+     * Delete zero or more FroniusInfos.
+     * @param {FroniusInfoDeleteManyArgs} args - Arguments to filter FroniusInfos to delete.
      * @example
-     * // Delete a few Froniuses
-     * const { count } = await prisma.fronius.deleteMany({
+     * // Delete a few FroniusInfos
+     * const { count } = await prisma.froniusInfo.deleteMany({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      * 
     **/
-    deleteMany<T extends FroniusDeleteManyArgs>(
-      args?: SelectSubset<T, FroniusDeleteManyArgs>
+    deleteMany<T extends FroniusInfoDeleteManyArgs>(
+      args?: SelectSubset<T, FroniusInfoDeleteManyArgs>
     ): PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more Froniuses.
+     * Update zero or more FroniusInfos.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {FroniusUpdateManyArgs} args - Arguments to update one or more rows.
+     * @param {FroniusInfoUpdateManyArgs} args - Arguments to update one or more rows.
      * @example
-     * // Update many Froniuses
-     * const fronius = await prisma.fronius.updateMany({
+     * // Update many FroniusInfos
+     * const froniusInfo = await prisma.froniusInfo.updateMany({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -3789,59 +3837,59 @@ export namespace Prisma {
      * })
      * 
     **/
-    updateMany<T extends FroniusUpdateManyArgs>(
-      args: SelectSubset<T, FroniusUpdateManyArgs>
+    updateMany<T extends FroniusInfoUpdateManyArgs>(
+      args: SelectSubset<T, FroniusInfoUpdateManyArgs>
     ): PrismaPromise<BatchPayload>
 
     /**
-     * Create or update one Fronius.
-     * @param {FroniusUpsertArgs} args - Arguments to update or create a Fronius.
+     * Create or update one FroniusInfo.
+     * @param {FroniusInfoUpsertArgs} args - Arguments to update or create a FroniusInfo.
      * @example
-     * // Update or create a Fronius
-     * const fronius = await prisma.fronius.upsert({
+     * // Update or create a FroniusInfo
+     * const froniusInfo = await prisma.froniusInfo.upsert({
      *   create: {
-     *     // ... data to create a Fronius
+     *     // ... data to create a FroniusInfo
      *   },
      *   update: {
      *     // ... in case it already exists, update
      *   },
      *   where: {
-     *     // ... the filter for the Fronius we want to update
+     *     // ... the filter for the FroniusInfo we want to update
      *   }
      * })
     **/
-    upsert<T extends FroniusUpsertArgs>(
-      args: SelectSubset<T, FroniusUpsertArgs>
-    ): CheckSelect<T, Prisma__FroniusClient<Fronius>, Prisma__FroniusClient<FroniusGetPayload<T>>>
+    upsert<T extends FroniusInfoUpsertArgs>(
+      args: SelectSubset<T, FroniusInfoUpsertArgs>
+    ): CheckSelect<T, Prisma__FroniusInfoClient<FroniusInfo>, Prisma__FroniusInfoClient<FroniusInfoGetPayload<T>>>
 
     /**
-     * Count the number of Froniuses.
+     * Count the number of FroniusInfos.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {FroniusCountArgs} args - Arguments to filter Froniuses to count.
+     * @param {FroniusInfoCountArgs} args - Arguments to filter FroniusInfos to count.
      * @example
-     * // Count the number of Froniuses
-     * const count = await prisma.fronius.count({
+     * // Count the number of FroniusInfos
+     * const count = await prisma.froniusInfo.count({
      *   where: {
-     *     // ... the filter for the Froniuses we want to count
+     *     // ... the filter for the FroniusInfos we want to count
      *   }
      * })
     **/
-    count<T extends FroniusCountArgs>(
-      args?: Subset<T, FroniusCountArgs>,
+    count<T extends FroniusInfoCountArgs>(
+      args?: Subset<T, FroniusInfoCountArgs>,
     ): PrismaPromise<
       T extends _Record<'select', any>
         ? T['select'] extends true
           ? number
-          : GetScalarType<T['select'], FroniusCountAggregateOutputType>
+          : GetScalarType<T['select'], FroniusInfoCountAggregateOutputType>
         : number
     >
 
     /**
-     * Allows you to perform aggregations operations on a Fronius.
+     * Allows you to perform aggregations operations on a FroniusInfo.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {FroniusAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @param {FroniusInfoAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
      * @example
      * // Ordered by age ascending
      * // Where email contains prisma.io
@@ -3861,13 +3909,13 @@ export namespace Prisma {
      *   take: 10,
      * })
     **/
-    aggregate<T extends FroniusAggregateArgs>(args: Subset<T, FroniusAggregateArgs>): PrismaPromise<GetFroniusAggregateType<T>>
+    aggregate<T extends FroniusInfoAggregateArgs>(args: Subset<T, FroniusInfoAggregateArgs>): PrismaPromise<GetFroniusInfoAggregateType<T>>
 
     /**
-     * Group by Fronius.
+     * Group by FroniusInfo.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {FroniusGroupByArgs} args - Group by arguments.
+     * @param {FroniusInfoGroupByArgs} args - Group by arguments.
      * @example
      * // Group by city, order by createdAt, get count
      * const result = await prisma.user.groupBy({
@@ -3882,14 +3930,14 @@ export namespace Prisma {
      * 
     **/
     groupBy<
-      T extends FroniusGroupByArgs,
+      T extends FroniusInfoGroupByArgs,
       HasSelectOrTake extends Or<
         Extends<'skip', Keys<T>>,
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: FroniusGroupByArgs['orderBy'] }
-        : { orderBy?: FroniusGroupByArgs['orderBy'] },
+        ? { orderBy: FroniusInfoGroupByArgs['orderBy'] }
+        : { orderBy?: FroniusInfoGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends TupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -3938,16 +3986,16 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, FroniusGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetFroniusGroupByPayload<T> : Promise<InputErrors>
+    >(args: SubsetIntersection<T, FroniusInfoGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetFroniusInfoGroupByPayload<T> : Promise<InputErrors>
   }
 
   /**
-   * The delegate class that acts as a "Promise-like" for Fronius.
+   * The delegate class that acts as a "Promise-like" for FroniusInfo.
    * Why is this prefixed with `Prisma__`?
    * Because we want to prevent naming conflicts as mentioned in 
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export class Prisma__FroniusClient<T> implements PrismaPromise<T> {
+  export class Prisma__FroniusInfoClient<T> implements PrismaPromise<T> {
     [prisma]: true;
     private readonly _dmmf;
     private readonly _fetcher;
@@ -3964,6 +4012,7 @@ export namespace Prisma {
     constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
     readonly [Symbol.toStringTag]: 'PrismaClientPromise';
 
+    user<T extends UserArgs = {}>(args?: Subset<T, UserArgs>): CheckSelect<T, Prisma__UserClient<User | null >, Prisma__UserClient<UserGetPayload<T> | null >>;
 
     private get _document();
     /**
@@ -3991,248 +4040,288 @@ export namespace Prisma {
   // Custom InputTypes
 
   /**
-   * Fronius findUnique
+   * FroniusInfo findUnique
    */
-  export type FroniusFindUniqueArgs = {
+  export type FroniusInfoFindUniqueArgs = {
     /**
-     * Select specific fields to fetch from the Fronius
+     * Select specific fields to fetch from the FroniusInfo
      * 
     **/
-    select?: FroniusSelect | null
+    select?: FroniusInfoSelect | null
     /**
-     * Throw an Error if a Fronius can't be found
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: FroniusInfoInclude | null
+    /**
+     * Throw an Error if a FroniusInfo can't be found
      * 
     **/
     rejectOnNotFound?: RejectOnNotFound
     /**
-     * Filter, which Fronius to fetch.
+     * Filter, which FroniusInfo to fetch.
      * 
     **/
-    where: FroniusWhereUniqueInput
+    where: FroniusInfoWhereUniqueInput
   }
 
 
   /**
-   * Fronius findFirst
+   * FroniusInfo findFirst
    */
-  export type FroniusFindFirstArgs = {
+  export type FroniusInfoFindFirstArgs = {
     /**
-     * Select specific fields to fetch from the Fronius
+     * Select specific fields to fetch from the FroniusInfo
      * 
     **/
-    select?: FroniusSelect | null
+    select?: FroniusInfoSelect | null
     /**
-     * Throw an Error if a Fronius can't be found
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: FroniusInfoInclude | null
+    /**
+     * Throw an Error if a FroniusInfo can't be found
      * 
     **/
     rejectOnNotFound?: RejectOnNotFound
     /**
-     * Filter, which Fronius to fetch.
+     * Filter, which FroniusInfo to fetch.
      * 
     **/
-    where?: FroniusWhereInput
+    where?: FroniusInfoWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Froniuses to fetch.
+     * Determine the order of FroniusInfos to fetch.
      * 
     **/
-    orderBy?: Enumerable<FroniusOrderByInput>
+    orderBy?: Enumerable<FroniusInfoOrderByInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for Froniuses.
+     * Sets the position for searching for FroniusInfos.
      * 
     **/
-    cursor?: FroniusWhereUniqueInput
+    cursor?: FroniusInfoWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Froniuses from the position of the cursor.
+     * Take `±n` FroniusInfos from the position of the cursor.
      * 
     **/
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Froniuses.
+     * Skip the first `n` FroniusInfos.
      * 
     **/
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of Froniuses.
+     * Filter by unique combinations of FroniusInfos.
      * 
     **/
-    distinct?: Enumerable<FroniusScalarFieldEnum>
+    distinct?: Enumerable<FroniusInfoScalarFieldEnum>
   }
 
 
   /**
-   * Fronius findMany
+   * FroniusInfo findMany
    */
-  export type FroniusFindManyArgs = {
+  export type FroniusInfoFindManyArgs = {
     /**
-     * Select specific fields to fetch from the Fronius
+     * Select specific fields to fetch from the FroniusInfo
      * 
     **/
-    select?: FroniusSelect | null
+    select?: FroniusInfoSelect | null
     /**
-     * Filter, which Froniuses to fetch.
+     * Choose, which related nodes to fetch as well.
      * 
     **/
-    where?: FroniusWhereInput
+    include?: FroniusInfoInclude | null
+    /**
+     * Filter, which FroniusInfos to fetch.
+     * 
+    **/
+    where?: FroniusInfoWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Froniuses to fetch.
+     * Determine the order of FroniusInfos to fetch.
      * 
     **/
-    orderBy?: Enumerable<FroniusOrderByInput>
+    orderBy?: Enumerable<FroniusInfoOrderByInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for listing Froniuses.
+     * Sets the position for listing FroniusInfos.
      * 
     **/
-    cursor?: FroniusWhereUniqueInput
+    cursor?: FroniusInfoWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Froniuses from the position of the cursor.
+     * Take `±n` FroniusInfos from the position of the cursor.
      * 
     **/
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Froniuses.
+     * Skip the first `n` FroniusInfos.
      * 
     **/
     skip?: number
-    distinct?: Enumerable<FroniusScalarFieldEnum>
+    distinct?: Enumerable<FroniusInfoScalarFieldEnum>
   }
 
 
   /**
-   * Fronius create
+   * FroniusInfo create
    */
-  export type FroniusCreateArgs = {
+  export type FroniusInfoCreateArgs = {
     /**
-     * Select specific fields to fetch from the Fronius
+     * Select specific fields to fetch from the FroniusInfo
      * 
     **/
-    select?: FroniusSelect | null
+    select?: FroniusInfoSelect | null
     /**
-     * The data needed to create a Fronius.
+     * Choose, which related nodes to fetch as well.
      * 
     **/
-    data: XOR<FroniusCreateInput, FroniusUncheckedCreateInput>
+    include?: FroniusInfoInclude | null
+    /**
+     * The data needed to create a FroniusInfo.
+     * 
+    **/
+    data: XOR<FroniusInfoCreateInput, FroniusInfoUncheckedCreateInput>
   }
 
 
   /**
-   * Fronius createMany
+   * FroniusInfo createMany
    */
-  export type FroniusCreateManyArgs = {
-    data: Enumerable<FroniusCreateManyInput>
+  export type FroniusInfoCreateManyArgs = {
+    data: Enumerable<FroniusInfoCreateManyInput>
     skipDuplicates?: boolean
   }
 
 
   /**
-   * Fronius update
+   * FroniusInfo update
    */
-  export type FroniusUpdateArgs = {
+  export type FroniusInfoUpdateArgs = {
     /**
-     * Select specific fields to fetch from the Fronius
+     * Select specific fields to fetch from the FroniusInfo
      * 
     **/
-    select?: FroniusSelect | null
+    select?: FroniusInfoSelect | null
     /**
-     * The data needed to update a Fronius.
+     * Choose, which related nodes to fetch as well.
      * 
     **/
-    data: XOR<FroniusUpdateInput, FroniusUncheckedUpdateInput>
+    include?: FroniusInfoInclude | null
     /**
-     * Choose, which Fronius to update.
+     * The data needed to update a FroniusInfo.
      * 
     **/
-    where: FroniusWhereUniqueInput
+    data: XOR<FroniusInfoUpdateInput, FroniusInfoUncheckedUpdateInput>
+    /**
+     * Choose, which FroniusInfo to update.
+     * 
+    **/
+    where: FroniusInfoWhereUniqueInput
   }
 
 
   /**
-   * Fronius updateMany
+   * FroniusInfo updateMany
    */
-  export type FroniusUpdateManyArgs = {
-    data: XOR<FroniusUpdateManyMutationInput, FroniusUncheckedUpdateManyInput>
-    where?: FroniusWhereInput
+  export type FroniusInfoUpdateManyArgs = {
+    data: XOR<FroniusInfoUpdateManyMutationInput, FroniusInfoUncheckedUpdateManyInput>
+    where?: FroniusInfoWhereInput
   }
 
 
   /**
-   * Fronius upsert
+   * FroniusInfo upsert
    */
-  export type FroniusUpsertArgs = {
+  export type FroniusInfoUpsertArgs = {
     /**
-     * Select specific fields to fetch from the Fronius
+     * Select specific fields to fetch from the FroniusInfo
      * 
     **/
-    select?: FroniusSelect | null
+    select?: FroniusInfoSelect | null
     /**
-     * The filter to search for the Fronius to update in case it exists.
+     * Choose, which related nodes to fetch as well.
      * 
     **/
-    where: FroniusWhereUniqueInput
+    include?: FroniusInfoInclude | null
     /**
-     * In case the Fronius found by the `where` argument doesn't exist, create a new Fronius with this data.
+     * The filter to search for the FroniusInfo to update in case it exists.
      * 
     **/
-    create: XOR<FroniusCreateInput, FroniusUncheckedCreateInput>
+    where: FroniusInfoWhereUniqueInput
     /**
-     * In case the Fronius was found with the provided `where` argument, update it with this data.
+     * In case the FroniusInfo found by the `where` argument doesn't exist, create a new FroniusInfo with this data.
      * 
     **/
-    update: XOR<FroniusUpdateInput, FroniusUncheckedUpdateInput>
+    create: XOR<FroniusInfoCreateInput, FroniusInfoUncheckedCreateInput>
+    /**
+     * In case the FroniusInfo was found with the provided `where` argument, update it with this data.
+     * 
+    **/
+    update: XOR<FroniusInfoUpdateInput, FroniusInfoUncheckedUpdateInput>
   }
 
 
   /**
-   * Fronius delete
+   * FroniusInfo delete
    */
-  export type FroniusDeleteArgs = {
+  export type FroniusInfoDeleteArgs = {
     /**
-     * Select specific fields to fetch from the Fronius
+     * Select specific fields to fetch from the FroniusInfo
      * 
     **/
-    select?: FroniusSelect | null
+    select?: FroniusInfoSelect | null
     /**
-     * Filter which Fronius to delete.
+     * Choose, which related nodes to fetch as well.
      * 
     **/
-    where: FroniusWhereUniqueInput
+    include?: FroniusInfoInclude | null
+    /**
+     * Filter which FroniusInfo to delete.
+     * 
+    **/
+    where: FroniusInfoWhereUniqueInput
   }
 
 
   /**
-   * Fronius deleteMany
+   * FroniusInfo deleteMany
    */
-  export type FroniusDeleteManyArgs = {
-    where?: FroniusWhereInput
+  export type FroniusInfoDeleteManyArgs = {
+    where?: FroniusInfoWhereInput
   }
 
 
   /**
-   * Fronius without action
+   * FroniusInfo without action
    */
-  export type FroniusArgs = {
+  export type FroniusInfoArgs = {
     /**
-     * Select specific fields to fetch from the Fronius
+     * Select specific fields to fetch from the FroniusInfo
      * 
     **/
-    select?: FroniusSelect | null
+    select?: FroniusInfoSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: FroniusInfoInclude | null
   }
 
 
@@ -4278,16 +4367,15 @@ export namespace Prisma {
   export type GroupMembersScalarFieldEnum = (typeof GroupMembersScalarFieldEnum)[keyof typeof GroupMembersScalarFieldEnum]
 
 
-  export const FroniusScalarFieldEnum: {
-    fronius_id: 'fronius_id',
+  export const FroniusInfoScalarFieldEnum: {
+    user_id: 'user_id',
     fronius_userid: 'fronius_userid',
     fronius_password: 'fronius_password',
     fronius_accesskey_id: 'fronius_accesskey_id',
-    fronius_accesskey_value: 'fronius_accesskey_value',
-    user_id: 'user_id'
+    fronius_accesskey_value: 'fronius_accesskey_value'
   };
 
-  export type FroniusScalarFieldEnum = (typeof FroniusScalarFieldEnum)[keyof typeof FroniusScalarFieldEnum]
+  export type FroniusInfoScalarFieldEnum = (typeof FroniusInfoScalarFieldEnum)[keyof typeof FroniusInfoScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -4317,6 +4405,7 @@ export namespace Prisma {
     meter_hardware?: StringFilter | string
     is_group_admin?: IntNullableFilter | number | null
     group_id?: IntNullableFilter | number | null
+    fronius_info?: XOR<FroniusInfoRelationFilter, FroniusInfoWhereInput> | null
   }
 
   export type UserOrderByInput = {
@@ -4334,6 +4423,8 @@ export namespace Prisma {
 
   export type UserWhereUniqueInput = {
     user_id?: number
+    username?: string
+    email_address?: string
   }
 
   export type UserScalarWhereWithAggregatesInput = {
@@ -4408,41 +4499,39 @@ export namespace Prisma {
     group_id?: IntWithAggregatesFilter | number
   }
 
-  export type FroniusWhereInput = {
-    AND?: Enumerable<FroniusWhereInput>
-    OR?: Enumerable<FroniusWhereInput>
-    NOT?: Enumerable<FroniusWhereInput>
-    fronius_id?: IntFilter | number
+  export type FroniusInfoWhereInput = {
+    AND?: Enumerable<FroniusInfoWhereInput>
+    OR?: Enumerable<FroniusInfoWhereInput>
+    NOT?: Enumerable<FroniusInfoWhereInput>
+    user_id?: IntFilter | number
     fronius_userid?: StringFilter | string
     fronius_password?: StringFilter | string
     fronius_accesskey_id?: StringFilter | string
     fronius_accesskey_value?: StringFilter | string
-    user_id?: IntFilter | number
+    user?: XOR<UserRelationFilter, UserWhereInput>
   }
 
-  export type FroniusOrderByInput = {
-    fronius_id?: SortOrder
+  export type FroniusInfoOrderByInput = {
+    user_id?: SortOrder
     fronius_userid?: SortOrder
     fronius_password?: SortOrder
     fronius_accesskey_id?: SortOrder
     fronius_accesskey_value?: SortOrder
-    user_id?: SortOrder
   }
 
-  export type FroniusWhereUniqueInput = {
-    fronius_id?: number
+  export type FroniusInfoWhereUniqueInput = {
+    user_id?: number
   }
 
-  export type FroniusScalarWhereWithAggregatesInput = {
-    AND?: Enumerable<FroniusScalarWhereWithAggregatesInput>
-    OR?: Enumerable<FroniusScalarWhereWithAggregatesInput>
-    NOT?: Enumerable<FroniusScalarWhereWithAggregatesInput>
-    fronius_id?: IntWithAggregatesFilter | number
+  export type FroniusInfoScalarWhereWithAggregatesInput = {
+    AND?: Enumerable<FroniusInfoScalarWhereWithAggregatesInput>
+    OR?: Enumerable<FroniusInfoScalarWhereWithAggregatesInput>
+    NOT?: Enumerable<FroniusInfoScalarWhereWithAggregatesInput>
+    user_id?: IntWithAggregatesFilter | number
     fronius_userid?: StringWithAggregatesFilter | string
     fronius_password?: StringWithAggregatesFilter | string
     fronius_accesskey_id?: StringWithAggregatesFilter | string
     fronius_accesskey_value?: StringWithAggregatesFilter | string
-    user_id?: IntWithAggregatesFilter | number
   }
 
   export type UserCreateInput = {
@@ -4455,6 +4544,7 @@ export namespace Prisma {
     meter_hardware: string
     is_group_admin?: number | null
     group_id?: number | null
+    fronius_info?: FroniusInfoCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -4468,6 +4558,7 @@ export namespace Prisma {
     meter_hardware: string
     is_group_admin?: number | null
     group_id?: number | null
+    fronius_info?: FroniusInfoUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -4480,6 +4571,7 @@ export namespace Prisma {
     meter_hardware?: StringFieldUpdateOperationsInput | string
     is_group_admin?: NullableIntFieldUpdateOperationsInput | number | null
     group_id?: NullableIntFieldUpdateOperationsInput | number | null
+    fronius_info?: FroniusInfoUpdateOneWithoutUserInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -4493,6 +4585,7 @@ export namespace Prisma {
     meter_hardware?: StringFieldUpdateOperationsInput | string
     is_group_admin?: NullableIntFieldUpdateOperationsInput | number | null
     group_id?: NullableIntFieldUpdateOperationsInput | number | null
+    fronius_info?: FroniusInfoUncheckedUpdateOneWithoutUserInput
   }
 
   export type UserCreateManyInput = {
@@ -4611,64 +4704,59 @@ export namespace Prisma {
     group_id?: IntFieldUpdateOperationsInput | number
   }
 
-  export type FroniusCreateInput = {
+  export type FroniusInfoCreateInput = {
     fronius_userid: string
     fronius_password: string
     fronius_accesskey_id: string
     fronius_accesskey_value: string
-    user_id: number
+    user: UserCreateNestedOneWithoutFronius_infoInput
   }
 
-  export type FroniusUncheckedCreateInput = {
-    fronius_id?: number
+  export type FroniusInfoUncheckedCreateInput = {
+    user_id: number
     fronius_userid: string
     fronius_password: string
     fronius_accesskey_id: string
     fronius_accesskey_value: string
+  }
+
+  export type FroniusInfoUpdateInput = {
+    fronius_userid?: StringFieldUpdateOperationsInput | string
+    fronius_password?: StringFieldUpdateOperationsInput | string
+    fronius_accesskey_id?: StringFieldUpdateOperationsInput | string
+    fronius_accesskey_value?: StringFieldUpdateOperationsInput | string
+    user?: UserUpdateOneRequiredWithoutFronius_infoInput
+  }
+
+  export type FroniusInfoUncheckedUpdateInput = {
+    user_id?: IntFieldUpdateOperationsInput | number
+    fronius_userid?: StringFieldUpdateOperationsInput | string
+    fronius_password?: StringFieldUpdateOperationsInput | string
+    fronius_accesskey_id?: StringFieldUpdateOperationsInput | string
+    fronius_accesskey_value?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type FroniusInfoCreateManyInput = {
     user_id: number
-  }
-
-  export type FroniusUpdateInput = {
-    fronius_userid?: StringFieldUpdateOperationsInput | string
-    fronius_password?: StringFieldUpdateOperationsInput | string
-    fronius_accesskey_id?: StringFieldUpdateOperationsInput | string
-    fronius_accesskey_value?: StringFieldUpdateOperationsInput | string
-    user_id?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type FroniusUncheckedUpdateInput = {
-    fronius_id?: IntFieldUpdateOperationsInput | number
-    fronius_userid?: StringFieldUpdateOperationsInput | string
-    fronius_password?: StringFieldUpdateOperationsInput | string
-    fronius_accesskey_id?: StringFieldUpdateOperationsInput | string
-    fronius_accesskey_value?: StringFieldUpdateOperationsInput | string
-    user_id?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type FroniusCreateManyInput = {
-    fronius_id?: number
     fronius_userid: string
     fronius_password: string
     fronius_accesskey_id: string
     fronius_accesskey_value: string
-    user_id: number
   }
 
-  export type FroniusUpdateManyMutationInput = {
+  export type FroniusInfoUpdateManyMutationInput = {
     fronius_userid?: StringFieldUpdateOperationsInput | string
     fronius_password?: StringFieldUpdateOperationsInput | string
     fronius_accesskey_id?: StringFieldUpdateOperationsInput | string
     fronius_accesskey_value?: StringFieldUpdateOperationsInput | string
-    user_id?: IntFieldUpdateOperationsInput | number
   }
 
-  export type FroniusUncheckedUpdateManyInput = {
-    fronius_id?: IntFieldUpdateOperationsInput | number
+  export type FroniusInfoUncheckedUpdateManyInput = {
+    user_id?: IntFieldUpdateOperationsInput | number
     fronius_userid?: StringFieldUpdateOperationsInput | string
     fronius_password?: StringFieldUpdateOperationsInput | string
     fronius_accesskey_id?: StringFieldUpdateOperationsInput | string
     fronius_accesskey_value?: StringFieldUpdateOperationsInput | string
-    user_id?: IntFieldUpdateOperationsInput | number
   }
 
   export type IntFilter = {
@@ -4705,6 +4793,11 @@ export namespace Prisma {
     gt?: number
     gte?: number
     not?: NestedIntNullableFilter | number | null
+  }
+
+  export type FroniusInfoRelationFilter = {
+    is?: FroniusInfoWhereInput | null
+    isNot?: FroniusInfoWhereInput | null
   }
 
   export type IntWithAggregatesFilter = {
@@ -4867,6 +4960,23 @@ export namespace Prisma {
     max?: NestedStringNullableFilter
   }
 
+  export type UserRelationFilter = {
+    is?: UserWhereInput
+    isNot?: UserWhereInput
+  }
+
+  export type FroniusInfoCreateNestedOneWithoutUserInput = {
+    create?: XOR<FroniusInfoCreateWithoutUserInput, FroniusInfoUncheckedCreateWithoutUserInput>
+    connectOrCreate?: FroniusInfoCreateOrConnectWithoutUserInput
+    connect?: FroniusInfoWhereUniqueInput
+  }
+
+  export type FroniusInfoUncheckedCreateNestedOneWithoutUserInput = {
+    create?: XOR<FroniusInfoCreateWithoutUserInput, FroniusInfoUncheckedCreateWithoutUserInput>
+    connectOrCreate?: FroniusInfoCreateOrConnectWithoutUserInput
+    connect?: FroniusInfoWhereUniqueInput
+  }
+
   export type StringFieldUpdateOperationsInput = {
     set?: string
   }
@@ -4879,6 +4989,16 @@ export namespace Prisma {
     divide?: number
   }
 
+  export type FroniusInfoUpdateOneWithoutUserInput = {
+    create?: XOR<FroniusInfoCreateWithoutUserInput, FroniusInfoUncheckedCreateWithoutUserInput>
+    connectOrCreate?: FroniusInfoCreateOrConnectWithoutUserInput
+    upsert?: FroniusInfoUpsertWithoutUserInput
+    connect?: FroniusInfoWhereUniqueInput
+    disconnect?: boolean
+    delete?: boolean
+    update?: XOR<FroniusInfoUpdateWithoutUserInput, FroniusInfoUncheckedUpdateWithoutUserInput>
+  }
+
   export type IntFieldUpdateOperationsInput = {
     set?: number
     increment?: number
@@ -4887,8 +5007,32 @@ export namespace Prisma {
     divide?: number
   }
 
+  export type FroniusInfoUncheckedUpdateOneWithoutUserInput = {
+    create?: XOR<FroniusInfoCreateWithoutUserInput, FroniusInfoUncheckedCreateWithoutUserInput>
+    connectOrCreate?: FroniusInfoCreateOrConnectWithoutUserInput
+    upsert?: FroniusInfoUpsertWithoutUserInput
+    connect?: FroniusInfoWhereUniqueInput
+    disconnect?: boolean
+    delete?: boolean
+    update?: XOR<FroniusInfoUpdateWithoutUserInput, FroniusInfoUncheckedUpdateWithoutUserInput>
+  }
+
   export type NullableStringFieldUpdateOperationsInput = {
     set?: string | null
+  }
+
+  export type UserCreateNestedOneWithoutFronius_infoInput = {
+    create?: XOR<UserCreateWithoutFronius_infoInput, UserUncheckedCreateWithoutFronius_infoInput>
+    connectOrCreate?: UserCreateOrConnectWithoutFronius_infoInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutFronius_infoInput = {
+    create?: XOR<UserCreateWithoutFronius_infoInput, UserUncheckedCreateWithoutFronius_infoInput>
+    connectOrCreate?: UserCreateOrConnectWithoutFronius_infoInput
+    upsert?: UserUpsertWithoutFronius_infoInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<UserUpdateWithoutFronius_infoInput, UserUncheckedUpdateWithoutFronius_infoInput>
   }
 
   export type NestedIntFilter = {
@@ -5107,6 +5251,104 @@ export namespace Prisma {
      * 
     **/
     max?: NestedStringNullableFilter
+  }
+
+  export type FroniusInfoCreateWithoutUserInput = {
+    fronius_userid: string
+    fronius_password: string
+    fronius_accesskey_id: string
+    fronius_accesskey_value: string
+  }
+
+  export type FroniusInfoUncheckedCreateWithoutUserInput = {
+    fronius_userid: string
+    fronius_password: string
+    fronius_accesskey_id: string
+    fronius_accesskey_value: string
+  }
+
+  export type FroniusInfoCreateOrConnectWithoutUserInput = {
+    where: FroniusInfoWhereUniqueInput
+    create: XOR<FroniusInfoCreateWithoutUserInput, FroniusInfoUncheckedCreateWithoutUserInput>
+  }
+
+  export type FroniusInfoUpsertWithoutUserInput = {
+    update: XOR<FroniusInfoUpdateWithoutUserInput, FroniusInfoUncheckedUpdateWithoutUserInput>
+    create: XOR<FroniusInfoCreateWithoutUserInput, FroniusInfoUncheckedCreateWithoutUserInput>
+  }
+
+  export type FroniusInfoUpdateWithoutUserInput = {
+    fronius_userid?: StringFieldUpdateOperationsInput | string
+    fronius_password?: StringFieldUpdateOperationsInput | string
+    fronius_accesskey_id?: StringFieldUpdateOperationsInput | string
+    fronius_accesskey_value?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type FroniusInfoUncheckedUpdateWithoutUserInput = {
+    fronius_userid?: StringFieldUpdateOperationsInput | string
+    fronius_password?: StringFieldUpdateOperationsInput | string
+    fronius_accesskey_id?: StringFieldUpdateOperationsInput | string
+    fronius_accesskey_value?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type UserCreateWithoutFronius_infoInput = {
+    username: string
+    password: string
+    email_address: string
+    rewards_points?: number | null
+    energy_consumption?: number | null
+    retailer: string
+    meter_hardware: string
+    is_group_admin?: number | null
+    group_id?: number | null
+  }
+
+  export type UserUncheckedCreateWithoutFronius_infoInput = {
+    user_id?: number
+    username: string
+    password: string
+    email_address: string
+    rewards_points?: number | null
+    energy_consumption?: number | null
+    retailer: string
+    meter_hardware: string
+    is_group_admin?: number | null
+    group_id?: number | null
+  }
+
+  export type UserCreateOrConnectWithoutFronius_infoInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutFronius_infoInput, UserUncheckedCreateWithoutFronius_infoInput>
+  }
+
+  export type UserUpsertWithoutFronius_infoInput = {
+    update: XOR<UserUpdateWithoutFronius_infoInput, UserUncheckedUpdateWithoutFronius_infoInput>
+    create: XOR<UserCreateWithoutFronius_infoInput, UserUncheckedCreateWithoutFronius_infoInput>
+  }
+
+  export type UserUpdateWithoutFronius_infoInput = {
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    email_address?: StringFieldUpdateOperationsInput | string
+    rewards_points?: NullableIntFieldUpdateOperationsInput | number | null
+    energy_consumption?: NullableIntFieldUpdateOperationsInput | number | null
+    retailer?: StringFieldUpdateOperationsInput | string
+    meter_hardware?: StringFieldUpdateOperationsInput | string
+    is_group_admin?: NullableIntFieldUpdateOperationsInput | number | null
+    group_id?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type UserUncheckedUpdateWithoutFronius_infoInput = {
+    user_id?: IntFieldUpdateOperationsInput | number
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    email_address?: StringFieldUpdateOperationsInput | string
+    rewards_points?: NullableIntFieldUpdateOperationsInput | number | null
+    energy_consumption?: NullableIntFieldUpdateOperationsInput | number | null
+    retailer?: StringFieldUpdateOperationsInput | string
+    meter_hardware?: StringFieldUpdateOperationsInput | string
+    is_group_admin?: NullableIntFieldUpdateOperationsInput | number | null
+    group_id?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
 

@@ -9,47 +9,47 @@ datasource db {
 }
 
 model User {
-  user_id             Int     @id @default(autoincrement())
-  username            String
-  password            String
-  email_address       String
-  rewards_points      Int?
-  energy_consumption  Int?
-  retailer            String
-  meter_hardware      String
-  is_group_admin      Int?
-  group_id            Int?
+  user_id            Int          @id @default(autoincrement())
+  username           String       @unique
+  password           String
+  email_address      String       @unique
+  rewards_points     Int?
+  energy_consumption Int?
+  retailer           String
+  meter_hardware     String
+  is_group_admin     Int?
+  group_id           Int?
+  fronius_info       FroniusInfo? @relation("fronius_infoTouser")
 
   @@map("user")
 }
 
 model Group {
-  group_id      Int       @id @default(autoincrement())
-  group_name    String
-  group_logo    String?
+  group_id   Int     @id @default(autoincrement())
+  group_name String
+  group_logo String?
 
   @@map("group")
 }
 
 model GroupMembers {
-  group_member_id       Int     @id @default(autoincrement())
-  user_id               Int
-  group_id              Int
+  group_member_id Int @id @default(autoincrement())
+  user_id         Int
+  group_id        Int
 
-  @@map("group_members")
   @@index([user_id], name: "fk_user1_idx")
   @@index([group_id], name: "fk_group1_idx")
+  @@map("group_members")
 }
 
-model Fronius {
-  fronius_id              Int       @id @default(autoincrement())
+model FroniusInfo {
+  user_id                 Int    @id
   fronius_userid          String
   fronius_password        String
   fronius_accesskey_id    String
   fronius_accesskey_value String
-  user_id                 Int
+  user                    User   @relation("fronius_infoTouser", fields: [user_id], references: [user_id])
 
   @@index([user_id], name: "fk_user1_idx")
-  @@map("fronius")
+  @@map("fronius_info")
 }
-

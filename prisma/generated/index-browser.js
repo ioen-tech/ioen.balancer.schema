@@ -95,13 +95,12 @@ exports.Prisma.GroupMembersScalarFieldEnum = makeEnum({
   group_id: 'group_id'
 });
 
-exports.Prisma.FroniusScalarFieldEnum = makeEnum({
-  fronius_id: 'fronius_id',
+exports.Prisma.FroniusInfoScalarFieldEnum = makeEnum({
+  user_id: 'user_id',
   fronius_userid: 'fronius_userid',
   fronius_password: 'fronius_password',
   fronius_accesskey_id: 'fronius_accesskey_id',
-  fronius_accesskey_value: 'fronius_accesskey_value',
-  user_id: 'user_id'
+  fronius_accesskey_value: 'fronius_accesskey_value'
 });
 
 exports.Prisma.SortOrder = makeEnum({
@@ -114,7 +113,7 @@ exports.Prisma.ModelName = makeEnum({
   User: 'User',
   Group: 'Group',
   GroupMembers: 'GroupMembers',
-  Fronius: 'Fronius'
+  FroniusInfo: 'FroniusInfo'
 });
 
 /**

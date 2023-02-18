@@ -35,14 +35,16 @@ CREATE TABLE `group_members` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `fronius` (
-    `fronius_id` INTEGER NOT NULL AUTO_INCREMENT,
+CREATE TABLE `fronius_info` (
+    `user_id` INTEGER NOT NULL,
     `fronius_userid` VARCHAR(191) NOT NULL,
     `fronius_password` VARCHAR(191) NOT NULL,
     `fronius_accesskey_id` VARCHAR(191) NOT NULL,
     `fronius_accesskey_value` VARCHAR(191) NOT NULL,
-    `user_id` INTEGER NOT NULL,
 
     INDEX `fk_user1_idx`(`user_id`),
-    PRIMARY KEY (`fronius_id`)
+    PRIMARY KEY (`user_id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- AddForeignKey
+ALTER TABLE `fronius_info` ADD FOREIGN KEY (`user_id`) REFERENCES `user`(`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
