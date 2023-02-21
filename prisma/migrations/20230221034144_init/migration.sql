@@ -1,5 +1,5 @@
 -- CreateTable
-CREATE TABLE `user` (
+CREATE TABLE `users` (
     `user_id` INTEGER NOT NULL AUTO_INCREMENT,
     `username` VARCHAR(191) NOT NULL,
     `password` VARCHAR(191) NOT NULL,
@@ -11,13 +11,18 @@ CREATE TABLE `user` (
     `is_group_admin` INTEGER,
     `group_id` INTEGER,
 
+    UNIQUE INDEX `users.username_unique`(`username`),
+    UNIQUE INDEX `users.email_address_unique`(`email_address`),
     PRIMARY KEY (`user_id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `group` (
+CREATE TABLE `groups` (
     `group_id` INTEGER NOT NULL AUTO_INCREMENT,
     `group_name` VARCHAR(191) NOT NULL,
+    `min_users` INTEGER NOT NULL,
+    `max_users` INTEGER NOT NULL,
+    `reward_start_balance` INTEGER NOT NULL,
     `group_logo` VARCHAR(191),
 
     PRIMARY KEY (`group_id`)
@@ -29,8 +34,8 @@ CREATE TABLE `group_members` (
     `user_id` INTEGER NOT NULL,
     `group_id` INTEGER NOT NULL,
 
-    INDEX `fk_user1_idx`(`user_id`),
-    INDEX `fk_group1_idx`(`group_id`),
+    INDEX `fk_users1_idx`(`user_id`),
+    INDEX `fk_groups1_idx`(`group_id`),
     PRIMARY KEY (`group_member_id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -42,9 +47,9 @@ CREATE TABLE `fronius_info` (
     `fronius_accesskey_id` VARCHAR(191) NOT NULL,
     `fronius_accesskey_value` VARCHAR(191) NOT NULL,
 
-    INDEX `fk_user1_idx`(`user_id`),
+    INDEX `fk_users1_idx`(`user_id`),
     PRIMARY KEY (`user_id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
-ALTER TABLE `fronius_info` ADD FOREIGN KEY (`user_id`) REFERENCES `user`(`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `fronius_info` ADD FOREIGN KEY (`user_id`) REFERENCES `users`(`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;

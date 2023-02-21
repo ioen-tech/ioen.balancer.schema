@@ -70,7 +70,7 @@ Prisma.validator = () => (val) => val
 // https://github.com/microsoft/TypeScript/issues/3192#issuecomment-261720275
 function makeEnum(x) { return x; }
 
-exports.Prisma.UserScalarFieldEnum = makeEnum({
+exports.Prisma.UsersScalarFieldEnum = makeEnum({
   user_id: 'user_id',
   username: 'username',
   password: 'password',
@@ -83,9 +83,12 @@ exports.Prisma.UserScalarFieldEnum = makeEnum({
   group_id: 'group_id'
 });
 
-exports.Prisma.GroupScalarFieldEnum = makeEnum({
+exports.Prisma.GroupsScalarFieldEnum = makeEnum({
   group_id: 'group_id',
   group_name: 'group_name',
+  min_users: 'min_users',
+  max_users: 'max_users',
+  reward_start_balance: 'reward_start_balance',
   group_logo: 'group_logo'
 });
 
@@ -110,8 +113,8 @@ exports.Prisma.SortOrder = makeEnum({
 
 
 exports.Prisma.ModelName = makeEnum({
-  User: 'User',
-  Group: 'Group',
+  Users: 'Users',
+  Groups: 'Groups',
   GroupMembers: 'GroupMembers',
   FroniusInfo: 'FroniusInfo'
 });
