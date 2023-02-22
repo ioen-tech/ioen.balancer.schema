@@ -13,10 +13,13 @@ set the DATABASE_URL property in `.env` file.
 ````bash
 DATABASE_URL="mysql://<user>:<password>@localhost:<port#>/<dbname>"
 ````
-<user> - mysql user
-<password> - mysql password
-<dbname> - database name to use.
-<port#> - port number that mysql sql is running.  Default value is '3306'
+
+| field | Description                    |
+| ------------- | ------------------------------ |
+| `<user>`      | mysql user       |
+| `<password>`   | mysql password     |
+| `<dbname>`   | database name to use     |
+| `<port#>`   | port number, default is **3306**     |
 
 Install all dependencies:
 ````bash
@@ -28,7 +31,7 @@ Generate prisma artifacts to be use by the backend api, run:
 npm run build
 ````
 
-If you want to clear the database, run: (Warning: Do not run this command if you are using the production DB)
+If you want to clear the database, run: **(WARNING: Do not run this command if you are using the production DB)**
 ````bash
 npx prisma migrate reset
 ````
@@ -37,6 +40,8 @@ If you have changes on your prisma model and wanted to apply the change, run:
 ````bash
 npx prisma migrate dev
 ````
+
+Login to your local mysql server and double check if the database name used have the correct tables.
 
 At this point, you have generated the prisma artifacts which will be use by the backend api (Redgrid.energy.api).
 For more details on the backend please go to https://github.com/redgridone/Redgrid.energy.api/blob/main/README.md
