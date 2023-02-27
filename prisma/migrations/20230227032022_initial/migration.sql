@@ -24,6 +24,7 @@ CREATE TABLE `groups` (
     `max_users` INTEGER NOT NULL,
     `reward_start_balance` INTEGER NOT NULL,
     `group_logo` VARCHAR(191),
+    `group_energy` INTEGER,
 
     PRIMARY KEY (`group_id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -46,6 +47,7 @@ CREATE TABLE `fronius_info` (
     `fronius_password` VARCHAR(191) NOT NULL,
     `fronius_accesskey_id` VARCHAR(191) NOT NULL,
     `fronius_accesskey_value` VARCHAR(191) NOT NULL,
+    `fronius_device_id` VARCHAR(191) NOT NULL,
 
     INDEX `fk_users1_idx`(`user_id`),
     PRIMARY KEY (`user_id`)

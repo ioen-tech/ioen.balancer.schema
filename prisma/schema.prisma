@@ -25,12 +25,13 @@ model Users {
 }
 
 model Groups {
-  group_id             Int     @id @default(autoincrement())
-  group_name           String
-  min_users            Int
-  max_users            Int
-  reward_start_balance Int
-  group_logo           String?
+  group_id              Int     @id @default(autoincrement())
+  group_name            String
+  min_users             Int
+  max_users             Int
+  reward_start_balance  Int
+  group_logo            String?
+  group_energy          Int?
 
   @@map("groups")
 }
@@ -51,6 +52,7 @@ model FroniusInfo {
   fronius_password        String
   fronius_accesskey_id    String
   fronius_accesskey_value String
+  fronius_device_id       String
   users                   Users  @relation("fronius_infoTousers", fields: [user_id], references: [user_id])
 
   @@index([user_id], name: "fk_users1_idx")
