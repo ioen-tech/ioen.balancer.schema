@@ -4,7 +4,7 @@ CREATE TABLE `users` (
     `username` VARCHAR(191) NOT NULL,
     `password` VARCHAR(191) NOT NULL,
     `email_address` VARCHAR(191) NOT NULL,
-    `rewards_points` INTEGER,
+    `rewards_points` INTEGER NOT NULL DEFAULT 0,
     `energy_consumption` INTEGER,
     `retailer` VARCHAR(191) NOT NULL,
     `meter_hardware` VARCHAR(191) NOT NULL,

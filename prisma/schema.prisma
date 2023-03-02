@@ -13,7 +13,7 @@ model Users {
   username           String       @unique
   password           String
   email_address      String       @unique
-  rewards_points     Int?
+  rewards_points     Int          @default(0)
   energy_consumption Int?
   retailer           String
   meter_hardware     String
