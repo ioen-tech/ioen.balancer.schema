@@ -53,5 +53,27 @@ CREATE TABLE `fronius_info` (
     PRIMARY KEY (`user_id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+-- CreateTable
+CREATE TABLE `nft_collections` (
+    `collection_id` INTEGER NOT NULL AUTO_INCREMENT,
+    `items` VARCHAR(191) NOT NULL,
+    `description` VARCHAR(191) NOT NULL,
+    `item_price` INTEGER NOT NULL,
+    `user_id` INTEGER NOT NULL,
+
+    INDEX `fk_users1_idx`(`user_id`),
+    PRIMARY KEY (`collection_id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `nft_store` (
+    `store_id` INTEGER NOT NULL AUTO_INCREMENT,
+    `items` VARCHAR(191) NOT NULL,
+    `description` VARCHAR(191) NOT NULL,
+    `item_price` INTEGER NOT NULL,
+
+    PRIMARY KEY (`store_id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
 -- AddForeignKey
 ALTER TABLE `fronius_info` ADD FOREIGN KEY (`user_id`) REFERENCES `users`(`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;

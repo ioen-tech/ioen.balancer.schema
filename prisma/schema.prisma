@@ -58,3 +58,23 @@ model FroniusInfo {
   @@index([user_id], name: "fk_users1_idx")
   @@map("fronius_info")
 }
+
+model NftCollections {
+  collection_id     Int     @id @default(autoincrement())
+  items             String
+  description       String
+  item_price        Int
+  user_id           Int
+
+  @@index([user_id], name: "fk_users1_idx")
+  @@map("nft_collections")
+}
+
+model NftStore {
+  store_id      Int   @id @default(autoincrement())
+  items         String
+  description   String
+  item_price    Int
+
+  @@map("nft_store")
+}
