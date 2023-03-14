@@ -20,6 +20,7 @@ model Users {
   is_group_admin     Int?
   group_id           Int?
   fronius_info       FroniusInfo? @relation("fronius_infoTousers")
+  fcm_token          String?
 
   @@map("users")
 }
@@ -77,4 +78,16 @@ model NftStore {
   item_price    Int
 
   @@map("nft_store")
+}
+
+model DailyNotification {
+  id                Int   @id @default(autoincrement())
+  daily_rewards     Int?
+  producing_count   Int?
+  balanced_count    Int?
+  consuming_count   Int?
+  user_id           Int?  @unique
+
+  @@index([user_id], name: "fk_users1_idx")
+  @@map("daily_notification")
 }

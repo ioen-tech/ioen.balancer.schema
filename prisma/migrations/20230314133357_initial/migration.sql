@@ -10,6 +10,7 @@ CREATE TABLE `users` (
     `meter_hardware` VARCHAR(191) NOT NULL,
     `is_group_admin` INTEGER,
     `group_id` INTEGER,
+    `fcm_token` VARCHAR(191),
 
     UNIQUE INDEX `users.username_unique`(`username`),
     UNIQUE INDEX `users.email_address_unique`(`email_address`),
@@ -73,6 +74,20 @@ CREATE TABLE `nft_store` (
     `item_price` INTEGER NOT NULL,
 
     PRIMARY KEY (`store_id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `daily_notification` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `daily_rewards` INTEGER,
+    `producing_count` INTEGER,
+    `balanced_count` INTEGER,
+    `consuming_count` INTEGER,
+    `user_id` INTEGER,
+
+    UNIQUE INDEX `daily_notification.user_id_unique`(`user_id`),
+    INDEX `fk_users1_idx`(`user_id`),
+    PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
