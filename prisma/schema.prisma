@@ -91,3 +91,13 @@ model DailyNotification {
   @@index([user_id], name: "fk_users1_idx")
   @@map("daily_notification")
 }
+
+model GroupEnergyLogs {
+  id            Int   @id @default(autoincrement())
+  event_time    Int
+  energy        Int
+  group_id      Int?
+
+  @@index([group_id], name: "fk_groups1_idx")
+  @@map("group_energy_logs")
+}
